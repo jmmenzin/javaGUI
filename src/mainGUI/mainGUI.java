@@ -2,7 +2,6 @@ package mainGUI;
 
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -10,9 +9,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import temperatureConversion.temperatureConverter;
+
 import java.text.DecimalFormat;
 
-public class mainGUI {
+public class MainGUI {
 
 	private JFrame frame;
 	public static int width = 800;
@@ -21,17 +23,14 @@ public class mainGUI {
 	public static JTextField input;
 	public static JPanel panel1;
 	public static JPanel result;
-	private boolean fahr = true;
-	private String decimalFormat = "#.##";
+	private final String decimalFormat = "#.##";
 	
-	/**
-	* Launch the application.
-	*/
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					mainGUI window = new mainGUI(width,height);
+					MainGUI window = new MainGUI(width,height);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,17 +38,12 @@ public class mainGUI {
 			}
 		});
 	}
-	
-	/**
-	* Create the application.
-	*/
-	public mainGUI(int frame_width, int frame_height) {
+
+	public MainGUI(int frame_width, int frame_height) 
+	{
 		initialize(frame_width, frame_height);
 	}
 	
-	/**
-	* Initialize the contents of the frame.
-	*/
 	private void initialize(int frame_width, int frame_height) {
 		frame = new JFrame("Test GUI");
 		frame.setSize(frame_width, frame_height);
@@ -66,7 +60,7 @@ public class mainGUI {
 			public void actionPerformed (ActionEvent e)
 			{
 				try {
-				double temperature = convertTemp(Double.parseDouble(input.getText()), fahr);
+				double temperature = temperatureConverter.Convert(Double.parseDouble(input.getText()), 'k', 'c');
 				btn1.setText("Temp: " + new DecimalFormat(decimalFormat).format(temperature));
 				}
 				catch (Exception f){
@@ -79,17 +73,5 @@ public class mainGUI {
 		frame.getContentPane().add(panel1);
 		frame.getContentPane().setLayout(new FlowLayout());
 		frame.setVisible(true);
-	}
-	
-	private double convertTemp(double temp, boolean fahr)
-	{
-		if(fahr = true)
-		{
-			return ((temp - 32)/(1.8));
-		}
-		else
-		{
-			return (temp * 1.8 + 32);
-		}
 	}	
 }
