@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,10 +18,15 @@ public class TemperatureConversionGUI
 	public static JPanel panel1;
 	public static JButton btn1;
 	public static JTextField input;
+	public static JComboBox<String> inputList;
+	public static JComboBox<String> outputList;
+	
+	private double temperature;
 	private final String frame_text = "Temperature Convertor";
 	private final String decimalFormat = "#.##";
 	private int frame_width;
 	private int frame_height;
+	private String[] unitTypes = {"Fahrenheit", "Celsius", "Kelvin"};
 	
 	public TemperatureConversionGUI(int frame_width_input, int frame_height_input) 
 	{
@@ -35,22 +41,35 @@ public class TemperatureConversionGUI
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		panel1 = new JPanel();
-		panel1.add(new JLabel("Converter"));
+		panel1.add(new JLabel("Input Temperature"));
 		
 		input = new JTextField(20);
 		panel1.add(input);
+		
+		inputList = new JComboBox<String>(unitTypes);
+		outputList = new JComboBox<String>(unitTypes);
+		panel1.add(inputList); 
+		panel1.add(outputList);
 		
 		btn1 = new JButton("Convert");
 		btn1.addActionListener(new ActionListener()  {
 			public void actionPerformed (ActionEvent e)
 			{
 				try {
-					double temperature = temperatureConverter.Convert(Double.parseDouble(input.getText()), 'f', 'c');
+					if((String)inputList.getSelectedItem() == (String)outputList.getSelectedItem()) 
+						{
+						temperature = Double.parseDouble(input.getText());
+						}
+					else
+					{
+					temperature = temperatureConverter.Convert(Double.parseDouble(input.getText()), (String)inputList.getSelectedItem(), (String)outputList.getSelectedItem());
 					btn1.setText("Temp: " + new DecimalFormat(decimalFormat).format(temperature));
 					}
-					catch (Exception f){
+				}
+				catch (Exception f)
+				{
 					btn1.setText("Not a valid temperature");
-					}
+				}
 			}
 		});
 		panel1.add(btn1);
